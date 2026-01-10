@@ -51,8 +51,8 @@ button {
   display: block;
 }
 
-/* Mobile & Tablet responsive styles */
-@media (max-width: 1024px) {
+/* Mobile & Tablet responsive styles (covers up to large tablets like iPad Pro) */
+@media (max-width: 1400px) {
   /* Show mobile controls, hide desktop controls */
   .mobile-controls {
     display: block;
@@ -147,7 +147,7 @@ button {
 }
 
 /* Landscape mode on mobile/tablet */
-@media (max-width: 1024px) and (orientation: landscape) {
+@media (max-width: 1400px) and (orientation: landscape) {
   .app-container {
     padding: 0.15rem !important;
     padding-bottom: 50px !important;
