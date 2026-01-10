@@ -39,8 +39,8 @@ button {
   display: block;
 }
 
-/* Mobile responsive styles */
-@media (max-width: 768px) {
+/* Mobile & Tablet responsive styles */
+@media (max-width: 1024px) {
   /* Show mobile controls, hide desktop controls */
   .mobile-controls {
     display: block;
