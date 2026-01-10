@@ -154,18 +154,73 @@ button {
     gap: 0.15rem !important;
   }
 
-  /* Force header collapsed in landscape */
-  .app-header .header-content {
+  /* Ensure desktop controls are hidden in landscape too */
+  .desktop-controls {
     display: none !important;
   }
 
-  .app-header .header-collapsed-bar {
+  /* Header starts collapsed in landscape, but CAN be expanded by tapping */
+  .app-header.collapsed .header-content {
+    display: none !important;
+  }
+
+  .app-header.collapsed .header-collapsed-bar {
     display: flex !important;
     padding: 4px 8px !important;
   }
 
+  /* When header is expanded (not collapsed), show content and hide bar */
+  .app-header:not(.collapsed) .header-content {
+    display: flex !important;
+    padding: 0.3rem !important;
+    gap: 0.3rem !important;
+  }
+
+  .app-header:not(.collapsed) .header-collapsed-bar {
+    display: none !important;
+  }
+
   .app-header .header-collapsed-bar span {
     font-size: 0.8rem !important;
+  }
+
+  /* Compact generator in landscape */
+  .generator-container {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.25rem !important;
+    align-items: center !important;
+  }
+
+  .generator-input {
+    flex: 1 !important;
+    min-width: 100px !important;
+  }
+
+  .generator-input input {
+    padding: 4px 8px !important;
+    font-size: 0.8rem !important;
+  }
+
+  .generator-presets {
+    gap: 2px !important;
+  }
+
+  .generator-presets button {
+    min-width: 28px !important;
+    min-height: 28px !important;
+    padding: 4px !important;
+    font-size: 0.9rem !important;
+  }
+
+  select {
+    padding: 4px !important;
+    font-size: 0.8rem !important;
+  }
+
+  .header-collapse-btn {
+    padding: 4px 8px !important;
+    font-size: 0.7rem !important;
   }
 
   /* Make canvas take maximum space */
@@ -174,8 +229,9 @@ button {
     min-height: 0 !important;
   }
 
+  /* Keep main as column to stack header above canvas */
   .app-main {
-    flex-direction: row !important;
+    flex-direction: column !important;
   }
 
   .app-footer {
