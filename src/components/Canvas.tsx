@@ -163,12 +163,10 @@ const Canvas = forwardRef<CanvasRef, CanvasProps>(({ tool, color, brushSize, ini
         }
     }));
 
-    const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+    const getLogicalCoords = (e: React.MouseEvent | React.TouchEvent) => {
         const canvas = canvasRef.current;
-        const ctx = contextRef.current;
-        if (!canvas || !ctx) return;
+        if (!canvas) return { x: 0, y: 0 };
 
-        // Get coordinates
         const rect = canvas.getBoundingClientRect();
         const dpr = dprRef.current;
 
@@ -181,9 +179,27 @@ const Canvas = forwardRef<CanvasRef, CanvasProps>(({ tool, color, brushSize, ini
             clientY = (e as React.MouseEvent).clientY;
         }
 
-        // Convert to logical coordinates (context is already scaled by dpr)
-        const logicalX = clientX - rect.left;
-        const logicalY = clientY - rect.top;
+        // The canvas internal logical size (used by the scaled context)
+        const logicalWidth = canvas.width / dpr;
+        const logicalHeight = canvas.height / dpr;
+
+        // Scale from displayed size to logical size
+        const scaleX = logicalWidth / rect.width;
+        const scaleY = logicalHeight / rect.height;
+
+        const x = (clientX - rect.left) * scaleX;
+        const y = (clientY - rect.top) * scaleY;
+
+        return { x, y };
+    };
+
+    const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+        const canvas = canvasRef.current;
+        const ctx = contextRef.current;
+        if (!canvas || !ctx) return;
+
+        const { x: logicalX, y: logicalY } = getLogicalCoords(e);
+        const dpr = dprRef.current;
 
         if (tool === 'bucket') {
             // floodFill works with physical pixels via getImageData, so scale up
@@ -204,25 +220,14 @@ const Canvas = forwardRef<CanvasRef, CanvasProps>(({ tool, color, brushSize, ini
 
     const draw = (e: React.MouseEvent | React.TouchEvent) => {
         if (!isDrawing) return;
-        const canvas = canvasRef.current;
         const ctx = contextRef.current;
-        if (!canvas || !ctx) return;
-
-        const rect = canvas.getBoundingClientRect();
-        let clientX, clientY;
+        if (!ctx) return;
 
         if ('touches' in e) {
             e.preventDefault(); // Prevent scrolling
-            clientX = e.touches[0].clientX;
-            clientY = e.touches[0].clientY;
-        } else {
-            clientX = (e as React.MouseEvent).clientX;
-            clientY = (e as React.MouseEvent).clientY;
         }
 
-        // Use logical coordinates (context is already scaled by dpr)
-        const logicalX = clientX - rect.left;
-        const logicalY = clientY - rect.top;
+        const { x: logicalX, y: logicalY } = getLogicalCoords(e);
 
         ctx.lineTo(logicalX, logicalY);
         ctx.stroke();
