@@ -9,6 +9,18 @@
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
+/* Canvas container - maintain reasonable aspect ratio */
+.canvas-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.canvas-container canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 * {
   box-sizing: border-box;
   touch-action: manipulation; /* Improves touch response */
@@ -52,18 +64,30 @@ button {
 
   .app-container {
     padding: 0.5rem !important;
-    padding-bottom: 70px !important; /* Space for fixed toolbar */
+    padding-bottom: 70px !important;
     gap: 0.5rem !important;
   }
 
-  .app-header {
-    flex-direction: column !important;
+  /* Collapsible header */
+  .header-logo {
+    display: none !important;
+  }
+
+  .header-collapse-btn {
+    display: flex !important;
+  }
+
+  .header-content {
     padding: 0.5rem !important;
     gap: 0.5rem !important;
   }
 
-  .app-header > div:first-child {
-    display: none; /* Hide logo on mobile to save space */
+  .app-header.collapsed .header-content {
+    display: none !important;
+  }
+
+  .app-header.collapsed .header-collapsed-bar {
+    display: flex !important;
   }
 
   .app-header h1 {
@@ -77,6 +101,7 @@ button {
   .canvas-container {
     flex: 1 !important;
     min-height: 0 !important;
+    aspect-ratio: auto !important;
   }
 
   .generator-container {
@@ -94,19 +119,22 @@ button {
   }
 
   .app-footer {
-    bottom: 60px !important; /* Above the mobile toolbar */
+    bottom: 60px !important;
   }
 }
 
-/* Even smaller screens */
+/* Even smaller screens (phones portrait) */
 @media (max-width: 480px) {
   .app-container {
     padding: 0.25rem !important;
     padding-bottom: 65px !important;
   }
 
-  .app-header {
+  .header-content {
     padding: 0.4rem !important;
+  }
+
+  .app-header {
     border-radius: 8px !important;
   }
 
@@ -115,5 +143,97 @@ button {
     min-height: 38px !important;
     padding: 6px !important;
     font-size: 1.2rem !important;
+  }
+}
+
+/* Landscape mode on mobile/tablet */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .app-container {
+    padding: 0.25rem !important;
+    padding-bottom: 60px !important;
+    gap: 0.25rem !important;
+  }
+
+  /* Auto-collapse header in landscape */
+  .header-content {
+    padding: 0.3rem 0.5rem !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .app-header.collapsed .header-collapsed-bar {
+    padding: 4px 8px !important;
+  }
+
+  /* Make canvas take maximum space */
+  .canvas-container {
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  .app-main {
+    flex-direction: row !important;
+  }
+
+  /* Compact generator in landscape */
+  .generator-container {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 0.3rem !important;
+  }
+
+  .generator-input {
+    flex: 1 !important;
+    min-width: 150px !important;
+  }
+
+  .generator-presets {
+    gap: 4px !important;
+  }
+
+  .generator-presets button {
+    min-width: 32px !important;
+    min-height: 32px !important;
+    padding: 4px !important;
+    font-size: 1rem !important;
+  }
+
+  .app-footer {
+    bottom: 55px !important;
+    font-size: 0.6rem !important;
+  }
+}
+
+/* Phone landscape - extra compact */
+@media (max-height: 500px) and (orientation: landscape) {
+  .app-container {
+    padding: 0.2rem !important;
+    padding-bottom: 55px !important;
+  }
+
+  /* Force collapsed header in phone landscape */
+  .header-content {
+    max-height: 45px !important;
+    overflow: hidden !important;
+  }
+
+  .generator-input input {
+    padding: 6px 8px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .generator-presets button {
+    min-width: 28px !important;
+    min-height: 28px !important;
+    font-size: 0.9rem !important;
+  }
+
+  select {
+    padding: 6px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .header-collapse-btn {
+    padding: 4px 8px !important;
+    font-size: 0.7rem !important;
   }
 }

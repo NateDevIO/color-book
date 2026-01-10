@@ -4,6 +4,7 @@
  */
 
 import { useState, useRef } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Controls } from './components/Controls';
 import { MobileControls } from './components/MobileControls';
 import Canvas, { type CanvasRef } from './components/Canvas';
@@ -17,6 +18,7 @@ function App() {
   const [brushSize, setBrushSize] = useState(10);
   const [bgImage, setBgImage] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
+  const [headerCollapsed, setHeaderCollapsed] = useState(false);
 
   const canvasRef = useRef<CanvasRef>(null);
 
@@ -25,6 +27,8 @@ function App() {
     try {
       const url = await generateImage(topic, complexity);
       setBgImage(url);
+      // Auto-collapse header after image loads (on mobile/tablet)
+      setHeaderCollapsed(true);
     } catch (e) {
       console.error(e);
       const message = e instanceof Error ? e.message : 'Unknown error';
@@ -45,27 +49,71 @@ function App() {
       gap: '1rem',
       position: 'relative'
     }}>
-      <header className="app-header" style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '1rem',
+      {/* Collapsible header for mobile/tablet */}
+      <header className={`app-header ${headerCollapsed ? 'collapsed' : ''}`} style={{
         backgroundColor: 'var(--panel-bg)',
         borderRadius: 'var(--border-radius)',
         boxShadow: 'var(--shadow)',
-        flexWrap: 'wrap',
-        gap: '1rem'
+        overflow: 'hidden',
+        transition: 'all 0.3s ease'
       }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <h1 style={{ margin: 0, fontSize: '1.8rem', color: 'var(--primary)', lineHeight: 1 }}>
+        {/* Collapsed mini-header (mobile/tablet only) */}
+        <div
+          className="header-collapsed-bar"
+          onClick={() => setHeaderCollapsed(false)}
+          style={{
+            display: 'none', // Shown via CSS on mobile when collapsed
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '8px',
+            cursor: 'pointer',
+            gap: '8px'
+          }}
+        >
+          <span style={{ fontSize: '1rem', color: 'var(--primary)', fontWeight: 'bold' }}>
             ☁️ DoodleDream
-          </h1>
-          <span style={{ fontSize: '0.9rem', color: '#666', fontStyle: 'italic', marginLeft: '4px' }}>
-            Color your imagination
           </span>
+          <span style={{ fontSize: '0.75rem', color: '#888' }}>Tap to change image</span>
+          <ChevronDown size={18} color="#888" />
         </div>
-        <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-          <Generator onGenerate={handleGenerate} isLoading={isLoading} />
+
+        {/* Full header content */}
+        <div className="header-content" style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '1rem',
+          flexWrap: 'wrap',
+          gap: '1rem'
+        }}>
+          <div className="header-logo" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <h1 style={{ margin: 0, fontSize: '1.8rem', color: 'var(--primary)', lineHeight: 1 }}>
+              ☁️ DoodleDream
+            </h1>
+            <span style={{ fontSize: '0.9rem', color: '#666', fontStyle: 'italic', marginLeft: '4px' }}>
+              Color your imagination
+            </span>
+          </div>
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+            <Generator onGenerate={handleGenerate} isLoading={isLoading} />
+          </div>
+          {/* Collapse button (mobile/tablet only) */}
+          <button
+            className="header-collapse-btn"
+            onClick={() => setHeaderCollapsed(true)}
+            style={{
+              display: 'none', // Shown via CSS on mobile
+              padding: '6px 12px',
+              borderRadius: '8px',
+              backgroundColor: '#f0f0f0',
+              color: '#666',
+              fontSize: '0.8rem',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            <ChevronUp size={16} /> Hide
+          </button>
         </div>
       </header>
 
