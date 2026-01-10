@@ -1,3 +1,9 @@
+// API URL: use relative path in production (Firebase), localhost in development
+const getApiUrl = () => {
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  return isLocalhost ? 'http://localhost:3001/api/generate' : '/api/generate';
+};
+
 export const generateImage = async (topic: string, complexity: string): Promise<string> => {
   const t = topic.toLowerCase();
 
@@ -16,8 +22,9 @@ export const generateImage = async (topic: string, complexity: string): Promise<
 
   // For custom prompts, call the backend API with just the topic
   try {
-    console.log(`Calling backend with topic: "${topic}"`);
-    const response = await fetch('http://localhost:3001/api/generate', {
+    const apiUrl = getApiUrl();
+    console.log(`Calling backend with topic: "${topic}" at ${apiUrl}`);
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt: topic })
