@@ -5,6 +5,7 @@
 
 import { useState, useRef } from 'react';
 import { Controls } from './components/Controls';
+import { MobileControls } from './components/MobileControls';
 import Canvas, { type CanvasRef } from './components/Canvas';
 import { Generator } from './components/Generator';
 import { generateImage } from './services/imageGen';
@@ -75,16 +76,19 @@ function App() {
         overflow: 'hidden',
         minHeight: 0
       }}>
-        <Controls
-          tool={tool}
-          setTool={setTool}
-          color={color}
-          setColor={setColor}
-          brushSize={brushSize}
-          setBrushSize={setBrushSize}
-          onUndo={() => canvasRef.current?.undo()}
-          onSave={() => canvasRef.current?.save()}
-        />
+        {/* Desktop controls - hidden on mobile */}
+        <div className="desktop-controls">
+          <Controls
+            tool={tool}
+            setTool={setTool}
+            color={color}
+            setColor={setColor}
+            brushSize={brushSize}
+            setBrushSize={setBrushSize}
+            onUndo={() => canvasRef.current?.undo()}
+            onSave={() => canvasRef.current?.save()}
+          />
+        </div>
 
         <div className="canvas-container" style={{
           flex: 1,
@@ -104,7 +108,21 @@ function App() {
         </div>
       </main>
 
-      <footer style={{
+      {/* Mobile controls - hidden on desktop */}
+      <div className="mobile-controls">
+        <MobileControls
+          tool={tool}
+          setTool={setTool}
+          color={color}
+          setColor={setColor}
+          brushSize={brushSize}
+          setBrushSize={setBrushSize}
+          onUndo={() => canvasRef.current?.undo()}
+          onSave={() => canvasRef.current?.save()}
+        />
+      </div>
+
+      <footer className="app-footer" style={{
         position: 'absolute',
         bottom: '4px',
         right: '8px',
