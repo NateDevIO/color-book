@@ -2,6 +2,34 @@
 
 Welcome to DoodleDream! This application lets you embrace your creativity by coloring fun, pre-made characters or generating brand new coloring pages using AI.
 
+## ✨ Features
+
+- **AI-Powered Image Generation** - Create custom coloring pages from text prompts using DALL-E 3
+- **10 Pre-made Templates** - Quick-start with dinosaur, unicorn, robot, butterfly, car, flower, spaceship, castle, dragon, and cat designs
+- **Drawing Tools** - Brush with adjustable size, fill bucket, and eraser
+- **Vibrant Color Palette** - Wide selection of colors to bring your artwork to life
+- **Undo Support** - Easily correct mistakes with one-click undo
+- **Save & Download** - Export your finished masterpiece as a PNG image
+- **Responsive Design** - Works on desktop and mobile devices
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React 19** - UI framework
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Fast build tool and dev server
+- **Lucide React** - Icon library
+- **HTML5 Canvas** - Drawing and rendering
+
+### Backend
+- **Node.js** - Runtime environment
+- **Express** - Web server framework
+- **OpenAI API** - DALL-E 3 for AI image generation
+
+### Deployment
+- **Firebase Hosting** - Static site hosting
+- **Firebase Cloud Functions** - Serverless API proxy
+
 ## 🚀 How to Use
 
 ### 1. Choose Your Canvas
